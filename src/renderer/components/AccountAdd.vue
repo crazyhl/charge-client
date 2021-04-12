@@ -23,8 +23,8 @@
 </template>
 
 <script lang=ts>
-import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue'
-import axios from 'axios'
+import { defineComponent, reactive, toRaw, UnwrapRef } from 'vue'
+import request from '/@/request'
 
 interface FormState {
   name: string;
@@ -46,7 +46,10 @@ export default defineComponent({
 
     const onSubmit = () => {
       console.log('values', formState, toRaw(formState))
-      // axios.post("http://127.0.0.1:8898/account/", toRaw(formState))
+      request.post('/account', toRaw(formState))
+        .then(response => {
+          console.log(response)
+        })
     }
 
     return {
