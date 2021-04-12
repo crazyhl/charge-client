@@ -9,10 +9,13 @@
     :style="{ lineHeight: '64px' }"
   >
     <a-menu-item key="1">
-      <router-link class="clickable" replace to="/"> Basic </router-link>
+      <router-link class="clickable" replace to="/">首页</router-link>
     </a-menu-item>
     <a-menu-item key="2">
-      <router-link class="clickable" replace to="/about"> About </router-link>
+      <router-link class="clickable" replace to="/about">关于</router-link>
+    </a-menu-item>
+    <a-menu-item key="3">
+      <router-link class="clickable" replace to="/accounts">账户</router-link>
     </a-menu-item>
   </a-menu>
   <div class="sidebar">
