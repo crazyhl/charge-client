@@ -1,31 +1,59 @@
 <template>
-  <div>
-    accountadd
-    <div>Electron Version: {{ version }} </div>
-    <div>Appdata Path: {{ path }} </div>
-    <div>Running Platform: {{ platform }} </div>
-  </div>
+    <a-typography-title :level="3">添加账户</a-typography-title>
+    <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
+      <a-form-item label="名称">
+        <a-input v-model:value="formState.name" />
+      </a-form-item>
+      <a-form-item label="现金">
+        <a-input v-model:value.number="formState.cash" :precision="3" type="number" />
+      </a-form-item>
+      <a-form-item label="包含信用">
+        <a-switch v-model:checked="formState.hasCredit" />
+      </a-form-item>
+      <a-form-item v-if="formState.hasCredit" label="信用">
+        <a-input v-model:value.number="formState.credit"  :precision="3"  type="number" />
+      </a-form-item>
+      <a-form-item label="排序">
+        <a-input v-model:value.number="formState.sort"   :precision="0" type="number" />
+      </a-form-item>
+      <a-form-item :wrapper-col="{ span: 14, offset: 2 }">
+        <a-button type="primary" @click="onSubmit">保存</a-button>
+      </a-form-item>
+    </a-form>
 </template>
 
 <script lang=ts>
-import { defineComponent, reactive, toRefs } from 'vue'
-import { useService } from '../hooks'
+import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue'
+import axios from 'axios'
+
+interface FormState {
+  name: string;
+  hasCredit: boolean;
+  cash: number;
+  credit: number;
+  sort: number;
+}
 
 export default defineComponent({
   setup() {
-    const { getBasicInformation } = useService('BaseService')
-    const data = reactive({
-      version: '',
-      path: '',
-      platform: ''
+    const formState: UnwrapRef<FormState> = reactive({
+      name: '',
+      hasCredit: false,
+      cash: 0,
+      credit: 0,
+      sort: 0
     })
-    getBasicInformation().then(({ version, platform, root }) => {
-      data.version = version
-      data.path = root
-      data.platform = platform
-    })
+
+    const onSubmit = () => {
+      console.log('values', formState, toRaw(formState))
+      // axios.post("http://127.0.0.1:8898/account/", toRaw(formState))
+    }
+
     return {
-      ...toRefs(data)
+      labelCol: { span: 2 },
+      wrapperCol: { span: 14 },
+      formState,
+      onSubmit
     }
   }
 })
