@@ -16,7 +16,6 @@
     <a-sub-menu>
       <template #title>
         <span class="submenu-title-wrapper">
-          <setting-outlined />
           设置
         </span>
       </template>

@@ -24,6 +24,37 @@ const columns = [
   {
     title: '名称',
     dataIndex: 'name'
+  },
+  {
+    title: '现金余额',
+    dataIndex: 'cash'
+  },
+  {
+    title: '信用账户',
+    dataIndex: 'has_credit',
+    customRender: (val: { text: boolean }) => {
+      return val.text === true ? '是' : '否'
+    }
+  },
+  {
+    title: '信用余额',
+    dataIndex: 'credit'
+  },
+  {
+    title: '排序',
+    dataIndex: 'sort'
+  },
+  {
+    title: '创建',
+    dataIndex: 'create_at'
+  },
+  {
+    title: '修改',
+    dataIndex: 'update_at'
+  },
+  {
+    title: '上次记账',
+    dataIndex: 'change_at'
   }
 ]
 
