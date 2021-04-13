@@ -9,6 +9,22 @@
     :loading="loading"
     style="margin-top:16px;"
   >
+    <template #time="{ record }">
+      <span style="font-size:12px;">
+        创建: {{record.create_at}}
+        <br />
+        编辑: {{record.update_at}}
+      </span>
+    </template>
+    <template #action="{ record }">
+      <a-button type="danger">
+          <router-link class="clickable" replace :to="{to: 'AccountDelete', params: {id: record.id}}">编辑</router-link>
+      </a-button>
+      &nbsp;
+      <a-button type="danger">
+          <router-link class="clickable" replace :to="{to: 'AccountDelete', params: {id: record.id}}">删除</router-link>
+      </a-button>
+    </template>
   </a-table>
 </template>
 
@@ -45,16 +61,18 @@ const columns = [
     dataIndex: 'sort'
   },
   {
-    title: '创建',
-    dataIndex: 'create_at'
-  },
-  {
-    title: '修改',
-    dataIndex: 'update_at'
+    title: '时间',
+    key: 'time',
+    slots: { customRender: 'time' }
   },
   {
     title: '上次记账',
     dataIndex: 'change_at'
+  },
+  {
+    title: '操作',
+    key: 'action',
+    slots: { customRender: 'action' }
   }
 ]
 
