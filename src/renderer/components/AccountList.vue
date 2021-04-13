@@ -2,28 +2,49 @@
   <a-button type="primary" size="large">
       <router-link class="clickable" replace to="/account/add">添加账户</router-link>
   </a-button>
-  <h1>Wait for add Account Table!</h1>
+  <a-table
+    :columns="columns"
+    :row-key="record => record.id"
+    :data-source="accounts"
+    :loading="loading"
+    style="margin-top:16px;"
+  >
+  </a-table>
 </template>
 
 <script lang=ts>
-import { defineComponent, reactive, toRefs } from 'vue'
-import { useService } from '../hooks'
+import { defineComponent, ref } from 'vue'
+import { accountList } from '/@/api/account'
+
+const columns = [
+  {
+    title: 'ID',
+    dataIndex: 'id'
+  },
+  {
+    title: '名称',
+    dataIndex: 'name'
+  }
+]
 
 export default defineComponent({
   setup() {
-    const { getBasicInformation } = useService('BaseService')
-    const data = reactive({
-      version: '',
-      path: '',
-      platform: ''
-    })
-    getBasicInformation().then(({ version, platform, root }) => {
-      data.version = version
-      data.path = root
-      data.platform = platform
+    const accounts = ref([])
+    const loading = ref(true)
+    accountList().then(response => {
+      loading.value = false
+      const data = response.data
+      if (data.status === 0) {
+        if (data.data !== null) {
+          accounts.value = data.data
+          console.log(accounts.value)
+        }
+      }
     })
     return {
-      ...toRefs(data)
+      accounts,
+      columns,
+      loading
     }
   }
 })

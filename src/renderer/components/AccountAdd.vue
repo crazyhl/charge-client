@@ -24,19 +24,12 @@
 
 <script lang=ts>
 import { defineComponent, reactive, toRaw, UnwrapRef } from 'vue'
-import request from '/@/request'
-
-interface FormState {
-  name: string;
-  hasCredit: boolean;
-  cash: number;
-  credit: number;
-  sort: number;
-}
+import { AddAccountFormState } from '/@/data/interface'
+import { accountAdd } from '/@/api/account'
 
 export default defineComponent({
   setup() {
-    const formState: UnwrapRef<FormState> = reactive({
+    const formState: UnwrapRef<AddAccountFormState> = reactive({
       name: '',
       hasCredit: false,
       cash: 0,
@@ -46,7 +39,7 @@ export default defineComponent({
 
     const onSubmit = () => {
       console.log('values', formState, toRaw(formState))
-      request.post('/account', toRaw(formState))
+      accountAdd(toRaw<AddAccountFormState>(formState))
         .then(response => {
           console.log(response)
         })

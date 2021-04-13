@@ -14,17 +14,26 @@
     <a-menu-item key="2">
       <router-link class="clickable" replace to="/about">关于</router-link>
     </a-menu-item>
-    <a-menu-item key="3">
-      <router-link class="clickable" replace to="/accounts">账户</router-link>
-    </a-menu-item>
+    <a-sub-menu>
+      <template #title>
+        <span class="submenu-title-wrapper">
+          <setting-outlined />
+          设置
+        </span>
+      </template>
+      <a-menu-item key="3">
+        <router-link class="clickable" replace to="/accounts">账户设置</router-link>
+      </a-menu-item>
+    </a-sub-menu>
   </a-menu>
-  <div class="sidebar">
-  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+
 export default defineComponent({
+  components: {
+  },
   setup() {
     return {
       selectedKeys: ref<string[]>(['1'])
