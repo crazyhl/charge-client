@@ -44,18 +44,16 @@ export default defineComponent({
       console.log('values', formState, toRaw(formState))
       accountAdd(toRaw<AddAccountFormState>(formState))
         .then(response => {
-          if (response.data.status === 0) {
-            notification.open({
-              message: '添加成功',
-              description: '添加成功，正在跳转',
-              duration: 3,
-              onClose: () => {
-                // 跳转
-                console.log(router)
-                router.push({ name: 'accountList' })
-              }
-            })
-          }
+          notification.open({
+            message: '添加成功',
+            description: '添加成功，正在跳转',
+            duration: 3,
+            onClose: () => {
+              // 跳转
+              console.log(router)
+              router.push({ name: 'accountList' })
+            }
+          })
         })
     }
 
