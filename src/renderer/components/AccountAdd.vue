@@ -26,6 +26,8 @@
 import { defineComponent, reactive, toRaw, UnwrapRef } from 'vue'
 import { AddAccountFormState } from '/@/data/interface'
 import { accountAdd } from '/@/api/account'
+import { notification } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
@@ -36,12 +38,24 @@ export default defineComponent({
       credit: 0,
       sort: 0
     })
+    const router = useRouter()
 
     const onSubmit = () => {
       console.log('values', formState, toRaw(formState))
       accountAdd(toRaw<AddAccountFormState>(formState))
         .then(response => {
-          console.log(response)
+          if (response.data.status === 0) {
+            notification.open({
+              message: '添加成功',
+              description: '添加成功，正在跳转',
+              duration: 3,
+              onClose: () => {
+                // 跳转
+                console.log(router)
+                router.push({ name: 'accountList' })
+              }
+            })
+          }
         })
     }
 

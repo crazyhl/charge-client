@@ -17,6 +17,7 @@ const router = createRouter({
     },
     {
       path: '/accounts',
+      name: 'accountList',
       component: AccountList
     }
     ,
