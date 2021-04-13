@@ -3,7 +3,6 @@
     <a-typography-title :level="3">生活账</a-typography-title>
   </div>
   <a-menu
-    theme="dark"
     mode="horizontal"
     v-model:selectedKeys="selectedKeys"
     :style="{ lineHeight: '64px' }"
@@ -43,4 +42,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.logo {
+  height: 31px;
+  line-height: 31px;
+  margin: 16px 24px 16px 0;
+  float: left;
+  padding-left: 50px;
+}
 </style>

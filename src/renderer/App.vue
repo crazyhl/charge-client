@@ -1,6 +1,6 @@
 <template >
   <a-layout :style="{background: '#fff'}">
-    <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+    <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%', background: '#fff', padding: '0' }">
       <navigator />
     </a-layout-header>
     <a-layout-content :style="{ padding: '0 50px', marginTop: '80px' }">
@@ -33,21 +33,4 @@ export default defineComponent({
 </script>
 
 <style>
-.logo {
-  height: 31px;
-  line-height: 31px;
-  color: #fff;
-  margin: 16px 24px 16px 0;
-  float: left;
-}
-.logo h3.ant-typography{
-  color:#fff
-}
-.site-layout .site-layout-background {
-  background: #fff;
-}
-
-[data-theme='dark'] .site-layout .site-layout-background {
-  background: #141414;
-}
 </style>
