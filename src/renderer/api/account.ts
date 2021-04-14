@@ -8,3 +8,7 @@ export function accountAdd(data: AddAccountFormState) {
 export function accountList() {
   return request.get('/account/list')
 }
+
+export function accountDelete(id: number) {
+  return request.delete('account/' + id)
+}

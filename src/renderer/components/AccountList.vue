@@ -16,21 +16,22 @@
         编辑: {{record.update_at}}
       </span>
     </template>
-    <template #action="{ record }">
+    <template #action="{ record, index }">
       <a-button type="danger">
-          <router-link class="clickable" replace :to="{to: 'AccountDelete', params: {id: record.id}}">编辑</router-link>
+          <router-link class="clickable" replace :to="{to: 'AccountEdit', params: {id: record.id}}">编辑</router-link>
       </a-button>
       &nbsp;
-      <a-button type="danger">
-          <router-link class="clickable" replace :to="{to: 'AccountDelete', params: {id: record.id}}">删除</router-link>
+      <a-button type="danger" @click="deleteAccountFunc(record.id, index)">
+          删除
       </a-button>
     </template>
   </a-table>
 </template>
 
 <script lang=ts>
+import { message } from 'ant-design-vue'
 import { defineComponent, ref } from 'vue'
-import { accountList } from '/@/api/account'
+import { accountDelete, accountList } from '/@/api/account'
 
 const columns = [
   {
@@ -90,10 +91,21 @@ export default defineComponent({
         }
       }
     })
+
+    const deleteAccountFunc = (id: number, index: number) => {
+      accountDelete(id).then(response => {
+        console.log(response.data)
+        // 显示 message 移除数据
+        accounts.value.splice(index, 1)
+        message.success(response.data.message)
+      })
+    }
+
     return {
       accounts,
       columns,
-      loading
+      loading,
+      deleteAccountFunc
     }
   }
 })
