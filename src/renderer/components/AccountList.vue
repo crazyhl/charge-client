@@ -8,6 +8,7 @@
     :data-source="accounts"
     :loading="loading"
     style="margin-top:16px;"
+    :pagination="false"
   >
     <template #time="{ record }">
       <span style="font-size:12px;">
