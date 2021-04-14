@@ -7,7 +7,7 @@
     :row-key="record => record.id"
     :data-source="accounts"
     :loading="loading"
-    style="margin-top:16px;"
+    style="margin-top:8px;"
     :pagination="false"
   >
     <template #time="{ record }">
