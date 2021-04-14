@@ -1,5 +1,5 @@
 import request from '/@/request'
-import { AddAccountFormState } from '/@/data/interface'
+import { AddAccountFormState, EditAccountFormState } from '/@/data/interface'
 
 export function accountAdd(data: AddAccountFormState) {
   return request.post('/account', data)
@@ -11,4 +11,12 @@ export function accountList() {
 
 export function accountDelete(id: number) {
   return request.delete('account/' + id)
+}
+
+export function accountEditDetail(id: string) {
+  return request.get('/account/' + id + '/edit')
+}
+
+export function accountEdit(data: EditAccountFormState) {
+  return request.put('/account/' + data.id, data)
 }
