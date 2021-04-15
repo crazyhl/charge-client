@@ -22,6 +22,9 @@
       <a-menu-item key="3">
         <router-link class="clickable" replace to="/accounts">账户设置</router-link>
       </a-menu-item>
+      <a-menu-item key="4">
+        <router-link class="clickable" replace to="/categories">分类设置</router-link>
+      </a-menu-item>
     </a-sub-menu>
   </a-menu>
 </template>

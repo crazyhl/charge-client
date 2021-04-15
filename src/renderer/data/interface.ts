@@ -14,3 +14,9 @@ export interface EditAccountFormState {
   credit: number;
   sort: number;
 }
+
+export interface AddCategoryFormStat {
+  name: string;
+  type: number[];
+  sort: number;
+}
