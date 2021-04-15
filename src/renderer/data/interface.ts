@@ -20,3 +20,10 @@ export interface AddCategoryFormStat {
   type: number[];
   sort: number;
 }
+
+export interface Category {
+  id: number;
+  type: number;
+  name: string;
+  sort: number;
+}

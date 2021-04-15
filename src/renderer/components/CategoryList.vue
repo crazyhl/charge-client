@@ -4,40 +4,37 @@
     <a-button type="primary" size="large">
       <router-link class="clickable" replace to="/category/add">添加分类</router-link>
     </a-button>
-    <div>
-    <img alt="Vue logo" src="../assets/logo.png" />
-    </div>
-    <div>Electron Version: {{ version }} </div>
-    <div>Appdata Path: {{ path }} </div>
-    <div>Running Platform: {{ platform }} </div>
+    <a-card v-for="(item, index) in type" :title="item" style="width: 100%; margin-top:16px;">
+      <a-tag v-if="index+'' in categoryMap" v-for="category in categoryMap[index]" closable  @close.prevent
+        style="font-size:1.4em;"
+      >
+        {{category.name}}
+      </a-tag>
+      <a-empty :image="simpleImage" v-else />
+    </a-card>
   </div>
 </template>
 
 <script lang=ts>
-import { defineComponent, reactive, toRefs } from 'vue'
-import { useService } from '../hooks'
+import { Empty } from 'ant-design-vue'
+import { defineComponent, ref } from 'vue'
 import { categoryList } from '/@/api/category'
 
 export default defineComponent({
   setup() {
-    const { getBasicInformation } = useService('BaseService')
-    const data = reactive({
-      version: '',
-      path: '',
-      platform: ''
-    })
-    getBasicInformation().then(({ version, platform, root }) => {
-      data.version = version
-      data.path = root
-      data.platform = platform
-    })
+    const categoryMap = ref({})
+    const type = ['收入', '支出', '借', '还', '转']
 
     categoryList().then(response => {
-      console.log(response)
+      categoryMap.value = response.data.data
+      console.log(categoryMap)
+      console.log(typeof categoryMap)
     })
 
     return {
-      ...toRefs(data)
+      simpleImage: Empty.PRESENTED_IMAGE_SIMPLE,
+      categoryMap,
+      type
     }
   }
 })
