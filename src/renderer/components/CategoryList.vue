@@ -4,21 +4,33 @@
     <a-button type="primary" size="large">
       <router-link class="clickable" replace to="/category/add">添加分类</router-link>
     </a-button>
-    <a-card v-for="(item, index) in type" :title="item" style="width: 100%; margin-top:16px;">
-      <a-tag v-if="index+'' in categoryMap" v-for="category in categoryMap[index]" closable  @close.prevent
-        style="font-size:1.4em;"
-      >
-        {{category.name}}
-      </a-tag>
+    <a-card size="small" v-for="(item, index) in type" :title="item" style="width: 100%; margin-top:16px;">
+       <a-list size="small" v-if="index+'' in categoryMap" :data-source="categoryMap[index]">
+        <template #renderItem="{ item, index }">
+          <a-list-item>
+            <template #actions>
+              <a-button  size="small" type="default">
+                  编辑
+              </a-button>
+              <a-button size="small" type="danger" @click="deleteCategoryFunc(item, index)">
+                  删除
+              </a-button>
+            </template>
+            {{ item.name }}
+          </a-list-item>
+        </template>
+        
+      </a-list>
       <a-empty :image="simpleImage" v-else />
     </a-card>
   </div>
 </template>
 
 <script lang=ts>
-import { Empty } from 'ant-design-vue'
+import { Empty, message } from 'ant-design-vue'
 import { defineComponent, ref } from 'vue'
-import { categoryList } from '/@/api/category'
+import { Category } from '../data/interface'
+import { categoryDelete, categoryList } from '/@/api/category'
 
 export default defineComponent({
   setup() {
@@ -31,10 +43,22 @@ export default defineComponent({
       console.log(typeof categoryMap)
     })
 
+    const deleteCategoryFunc = (item:Category, index:number) => {
+      console.log(item)
+      console.log(index)
+      categoryDelete(item.id).then(response => {
+        console.log(response.data)
+        // 显示 message 移除数据
+        categoryMap.value[item.type+""].splice(index, 1)
+        message.success(response.data.message)
+      })
+    }
+
     return {
       simpleImage: Empty.PRESENTED_IMAGE_SIMPLE,
       categoryMap,
-      type
+      type,
+      deleteCategoryFunc
     }
   }
 })

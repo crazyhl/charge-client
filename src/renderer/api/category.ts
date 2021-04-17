@@ -8,3 +8,7 @@ export function categoryList() {
 export function categoryAdd(data: AddCategoryFormStat) {
   return request.post('/category', data)
 }
+
+export function categoryDelete(id: number) {
+  return request.delete('/category/' + id)
+}
