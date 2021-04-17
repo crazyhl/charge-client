@@ -10,7 +10,7 @@
           <a-list-item>
             <template #actions>
               <a-button  size="small" type="default">
-                  编辑
+                <router-link class="clickable" replace :to="{ name: 'CategoryEdit', params: { id: item.id }}">编辑</router-link>
               </a-button>
               <a-button size="small" type="danger" @click="deleteCategoryFunc(item, index)">
                   删除

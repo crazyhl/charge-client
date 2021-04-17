@@ -6,6 +6,7 @@ import AccountAdd from '/@/components/AccountAdd.vue'
 import AccountEdit from '/@/components/AccountEdit.vue'
 import CategoryList from '/@/components/CategoryList.vue'
 import CategoryAdd from '/@/components/CategoryAdd.vue'
+import CategoryEdit from '/@/components/CategoryEdit.vue'
 
 const router = createRouter({
   history: createMemoryHistory(),
@@ -42,7 +43,12 @@ const router = createRouter({
       path: '/category/add',
       name: 'CategoryAdd',
       component: CategoryAdd
-    }
+    },
+    {
+      path: '/category/:id/edit',
+      name: 'CategoryEdit',
+      component: CategoryEdit
+    },
   ]
 })
 

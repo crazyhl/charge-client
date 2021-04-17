@@ -1,4 +1,4 @@
-import { AddCategoryFormStat } from '../data/interface'
+import { AddCategoryFormStat, Category } from '../data/interface'
 import request from '/@/request'
 
 export function categoryList() {
@@ -11,4 +11,12 @@ export function categoryAdd(data: AddCategoryFormStat) {
 
 export function categoryDelete(id: number) {
   return request.delete('/category/' + id)
+}
+
+export function categoryEditDetail(id: string) {
+  return request.get('/category/' + id + '/edit')
+}
+
+export function categoryEdit(data: Category) {
+  return request.put('/category/' + data.id, data)
 }
