@@ -13,6 +13,9 @@
     <a-menu-item key="2">
       <router-link class="clickable" replace to="/about">关于</router-link>
     </a-menu-item>
+    <a-menu-item key="5">
+      <router-link class="clickable" replace to="/charge-details">记账</router-link>
+    </a-menu-item>
     <a-sub-menu>
       <template #title>
         <span class="submenu-title-wrapper">

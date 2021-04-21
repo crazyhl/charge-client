@@ -7,6 +7,8 @@ import AccountEdit from '/@/components/AccountEdit.vue'
 import CategoryList from '/@/components/CategoryList.vue'
 import CategoryAdd from '/@/components/CategoryAdd.vue'
 import CategoryEdit from '/@/components/CategoryEdit.vue'
+import DetailList from '/@/components/DetailList.vue'
+import DetailAdd from '/@/components/DetailAdd.vue'
 
 const router = createRouter({
   history: createMemoryHistory(),
@@ -49,6 +51,16 @@ const router = createRouter({
       name: 'CategoryEdit',
       component: CategoryEdit
     },
+    {
+      path: '/charge-details',
+      name: 'ChargeDetailList',
+      component: DetailList
+    },
+    {
+      path: '/charge-details/add',
+      name: 'ChargeDetailAdd',
+      component: DetailAdd
+    }
   ]
 })
 

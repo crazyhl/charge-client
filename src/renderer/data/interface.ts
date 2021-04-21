@@ -21,9 +21,17 @@ export interface AddCategoryFormStat {
   sort: number;
 }
 
-export interface Category {
+export interface EditCategoryFormStat {
   id: number;
   type: number;
   name: string;
   sort: number;
+}
+
+export interface CategoryDetail extends EditCategoryFormStat {}
+
+export interface AddChargetDetailFormStat {
+  accountId: number;
+  type: number;
+  categoryId: number;
 }

@@ -31,7 +31,7 @@
 <script lang=ts>
 import { Empty, message } from 'ant-design-vue'
 import { defineComponent, ref } from 'vue'
-import { Category } from '../data/interface'
+import { CategoryDetail } from '../data/interface'
 import { categoryDelete, categoryList } from '/@/api/category'
 
 export default defineComponent({
@@ -45,7 +45,7 @@ export default defineComponent({
       console.log(typeof categoryMap)
     })
 
-    const deleteCategoryFunc = (item:Category, index:number) => {
+    const deleteCategoryFunc = (item:CategoryDetail, index:number) => {
       console.log(item)
       console.log(index)
       categoryDelete(item.id).then(response => {

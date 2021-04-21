@@ -24,14 +24,14 @@
 
 <script lang=ts>
 import { defineComponent, reactive, toRaw, UnwrapRef } from 'vue'
-import { Category } from '/@/data/interface'
-import { categoryAdd, categoryEdit, categoryEditDetail } from '/@/api/category'
+import { EditCategoryFormStat } from '/@/data/interface'
+import { categoryEdit, categoryEditDetail } from '/@/api/category'
 import { notification } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
-    const formState: UnwrapRef<Category> = reactive({
+    const formState: UnwrapRef<EditCategoryFormStat> = reactive({
       id: 0,
       name: '',
       type: 0,
@@ -52,7 +52,7 @@ export default defineComponent({
 
     const onSubmit = () => {
       console.log('values', formState, toRaw(formState))
-      categoryEdit(toRaw<Category>(formState))
+      categoryEdit(toRaw<EditCategoryFormStat>(formState))
         .then(response => {
           notification.open({
             message: '编辑成功',
