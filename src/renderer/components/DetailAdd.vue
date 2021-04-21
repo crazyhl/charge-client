@@ -4,7 +4,6 @@
       <a-form-item label="账户">
         <a-select
           v-model:value="formState.accountId"
-          style="width: 120px"
           ref="select"
         >
           <a-select-option :value="account.id" v-for="account in accounts" :key="account.id">{{account.name}}</a-select-option>
@@ -22,7 +21,6 @@
       <a-form-item label="分类" v-if="categoryMap[formState.type] !== undefined">
         <a-select
           v-model:value="formState.categoryId"
-          style="width: 120px"
           ref="select"
         >
           <a-select-option :value="category.id" v-for="category in categoryMap[formState.type]"
@@ -42,6 +40,26 @@
           auto-size
         />
       </a-form-item>
+      <template v-if="formState.type === 3">
+        <a-form-item label="还款账户">
+          <a-select
+            v-model:value="formState.repayAccountId"
+            ref="select"
+          >
+            <a-select-option :value="account.id" v-for="account in accounts" :key="account.id">{{account.name}}</a-select-option>
+          </a-select>
+        </a-form-item>
+      </template>
+      <template v-if="formState.type === 4">
+        <a-form-item label="转账账户">
+          <a-select
+            v-model:value="formState.transferAccountId"
+            ref="select"
+          >
+            <a-select-option :value="account.id" v-for="account in accounts" :key="account.id">{{account.name}}</a-select-option>
+          </a-select>
+        </a-form-item>
+      </template>
       <a-form-item :wrapper-col="{ span: 14, offset: 2 }">
         <a-button type="primary" @click="onSubmit">保存</a-button>
       </a-form-item>
@@ -69,18 +87,35 @@ export default defineComponent({
     })
 
     // 类型改变后重置分类
-    const typeChange = () => {
+    const setCategoryInitValue = () => {
       if (categoryMap.value[formState.type] !== undefined) {
         formState.categoryId = categoryMap.value[formState.type][0].id
       } else {
         formState.categoryId = 0
       }
     }
+    // 类型改变后需要重置一些数据
+    const typeChange = () => {
+      setCategoryInitValue()
+      formState.repayAccountId = 0
+      formState.transferAccountId = 0
+      formState.repaidDetailIds = []
+      console.log(formState.type)
+      switch (formState.type) {
+        case 3:
+          formState.repayAccountId = accounts.value[0].id
+          break
+        case 4:
+          formState.transferAccountId = accounts.value[0].id
+          break
+      }
+    }
+
     // 获取分类列表
     const categoryMap = ref({})
     categoryList().then(response => {
       categoryMap.value = response.data.data
-      typeChange()
+      setCategoryInitValue()
     })
     // 表单
     const formState: UnwrapRef<AddChargetDetailFormStat> = reactive({
@@ -88,7 +123,10 @@ export default defineComponent({
       type: 0,
       categoryId: 0,
       money: 0,
-      description: ''
+      description: '',
+      repayAccountId: 0,
+      transferAccountId: 0,
+      repaidDetailIds: []
     })
     // 提交事件
     const onSubmit = () => {
