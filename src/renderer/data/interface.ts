@@ -34,4 +34,6 @@ export interface AddChargetDetailFormStat {
   accountId: number;
   type: number;
   categoryId: number;
+  money: number;
+  description: string;
 }

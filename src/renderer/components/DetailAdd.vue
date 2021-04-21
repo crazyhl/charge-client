@@ -32,8 +32,15 @@
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="排序">
-        <a-input v-model:value.number="formState.sort"   :precision="0" type="number" />
+      <a-form-item label="金额">
+        <a-input v-model:value.number="formState.money" :precision="3" type="number" />
+      </a-form-item>
+      <a-form-item label="说明">
+        <a-textarea
+          v-model:value="formState.description"
+          placeholder=""
+          auto-size
+        />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 14, offset: 2 }">
         <a-button type="primary" @click="onSubmit">保存</a-button>
@@ -79,7 +86,9 @@ export default defineComponent({
     const formState: UnwrapRef<AddChargetDetailFormStat> = reactive({
       accountId: 0,
       type: 0,
-      categoryId: 0
+      categoryId: 0,
+      money: 0,
+      description: ''
     })
     // 提交事件
     const onSubmit = () => {
