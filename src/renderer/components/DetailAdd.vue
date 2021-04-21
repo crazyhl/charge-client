@@ -45,6 +45,7 @@
           <a-select
             v-model:value="formState.repayAccountId"
             ref="select"
+            @change="handleRepayAccountChange"
           >
             <a-select-option :value="account.id" v-for="account in accounts" :key="account.id">{{account.name}}</a-select-option>
           </a-select>
@@ -100,15 +101,19 @@ export default defineComponent({
       formState.repayAccountId = 0
       formState.transferAccountId = 0
       formState.repaidDetailIds = []
-      console.log(formState.type)
       switch (formState.type) {
         case 3:
           formState.repayAccountId = accounts.value[0].id
+          handleRepayAccountChange()
           break
         case 4:
           formState.transferAccountId = accounts.value[0].id
           break
       }
+    }
+    // 还款账户的值改变后
+    const handleRepayAccountChange = () => {
+      console.log(formState.repayAccountId)
     }
 
     // 获取分类列表
@@ -140,7 +145,8 @@ export default defineComponent({
       onSubmit,
       accounts,
       categoryMap,
-      typeChange
+      typeChange,
+      handleRepayAccountChange
     }
   }
 })
