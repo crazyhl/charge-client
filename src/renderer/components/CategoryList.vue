@@ -4,7 +4,10 @@
     <a-button type="primary" size="large">
       <router-link class="clickable" replace to="/category/add">添加分类</router-link>
     </a-button>
-    <a-card size="small" v-for="(item, index) in type" :title="item" style="width: 100%; margin-top:16px;">
+    <a-card size="small"
+      v-for="(item, index) in type" :title="item" style="width: 100%; margin-top:16px;"
+      :key="item"
+    >
        <a-list size="small" v-if="index+'' in categoryMap" :data-source="categoryMap[index]">
         <template #renderItem="{ item, index }">
           <a-list-item>
@@ -19,7 +22,6 @@
             {{ item.name }}
           </a-list-item>
         </template>
-        
       </a-list>
       <a-empty :image="simpleImage" v-else />
     </a-card>
@@ -49,7 +51,7 @@ export default defineComponent({
       categoryDelete(item.id).then(response => {
         console.log(response.data)
         // 显示 message 移除数据
-        categoryMap.value[item.type+""].splice(index, 1)
+        categoryMap.value[item.type + ''].splice(index, 1)
         message.success(response.data.message)
       })
     }
