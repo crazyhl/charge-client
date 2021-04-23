@@ -32,6 +32,7 @@
 <script lang=ts>
 import { message } from 'ant-design-vue'
 import { defineComponent, ref } from 'vue'
+import { AccountDetail } from '../data/interface'
 import { accountDelete, accountList } from '/@/api/account'
 
 const columns = [
@@ -80,7 +81,7 @@ const columns = [
 
 export default defineComponent({
   setup() {
-    const accounts = ref([])
+    const accounts = ref<AccountDetail[]>([])
     const loading = ref(true)
     accountList().then(response => {
       loading.value = false

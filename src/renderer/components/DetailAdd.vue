@@ -69,14 +69,15 @@
 
 <script lang=ts>
 import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue'
-import { AddChargetDetailFormStat } from '/@/data/interface'
+import { AccountDetail, AddChargetDetailFormStat } from '/@/data/interface'
 import { accountList } from '/@/api/account'
 import { categoryList } from '/@/api/category'
+import { unRepayDetailList } from '../api/charge_detail'
 
 export default defineComponent({
   setup() {
     // 获取账户列表
-    const accounts = ref([])
+    const accounts = ref<AccountDetail[]>([])
     accountList().then(response => {
       const data = response.data
       if (data.status === 0) {
@@ -111,9 +112,15 @@ export default defineComponent({
           break
       }
     }
+    // 为换账单详情列表
+    const unRepaidDetialList = ref([])
     // 还款账户的值改变后
     const handleRepayAccountChange = () => {
       console.log(formState.repayAccountId)
+      // 获取该账户的未还列表
+      unRepayDetailList(formState.repayAccountId).then(resp => {
+        console.log(resp)
+      })
     }
 
     // 获取分类列表
@@ -146,7 +153,8 @@ export default defineComponent({
       accounts,
       categoryMap,
       typeChange,
-      handleRepayAccountChange
+      handleRepayAccountChange,
+      unRepaidDetialList
     }
   }
 })

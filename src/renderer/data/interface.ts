@@ -15,6 +15,18 @@ export interface EditAccountFormState {
   sort: number;
 }
 
+export interface AccountDetail {
+  id: number;
+  name: string;
+  has_credit: boolean;
+  cash: number;
+  credit: number;
+  sort: number;
+  create_at: string;
+  update_at: string;
+  change_at: string
+}
+
 export interface AddCategoryFormStat {
   name: string;
   type: number[];
