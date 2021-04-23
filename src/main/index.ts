@@ -3,9 +3,9 @@ import './dialog'
 import { Logger } from './logger'
 import { initialize } from './services'
 import indexPreload from '/@preload/index'
-import anotherPreload from '/@preload/another'
+// import anotherPreload from '/@preload/another'
 import indexHtmlUrl from '/@renderer/index.html'
-import sideHtmlUrl from '/@renderer/side.html'
+// import sideHtmlUrl from '/@renderer/side.html'
 import logoUrl from '/@static/logo.png'
 
 async function main() {
@@ -39,20 +39,20 @@ function createWindow() {
   return mainWindow
 }
 
-function createSecondWindow() {
-  const sideWindow = new BrowserWindow({
-    height: 600,
-    width: 300,
-    webPreferences: {
-      preload: anotherPreload,
-      contextIsolation: true,
-      nodeIntegration: false
-    }
-  })
+// function createSecondWindow() {
+//   const sideWindow = new BrowserWindow({
+//     height: 600,
+//     width: 300,
+//     webPreferences: {
+//       preload: anotherPreload,
+//       contextIsolation: true,
+//       nodeIntegration: false
+//     }
+//   })
 
-  sideWindow.loadURL(sideHtmlUrl)
-  return sideWindow
-}
+//   sideWindow.loadURL(sideHtmlUrl)
+//   return sideWindow
+// }
 
 // ensure app start as single instance
 if (!app.requestSingleInstanceLock()) {
