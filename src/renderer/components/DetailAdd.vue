@@ -1,5 +1,5 @@
 <template>
-    <a-typography-title :level="3">新增记账</a-typography-title>
+    <a-typography-title :level="3">新增记账{{typeof categoryMap}}</a-typography-title>
     <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="账户">
         <a-select
@@ -18,7 +18,7 @@
           <a-radio :value="4">转</a-radio>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="分类" v-if="categoryMap[formState.type] !== undefined">
+      <a-form-item label="分类" v-if="categoryMap !== undefined && categoryMap.hasOwnProperty(formState.type) && categoryMap[formState.type] !== undefined">
         <a-select
           v-model:value="formState.categoryId"
           ref="select"
@@ -69,7 +69,7 @@
 
 <script lang=ts>
 import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue'
-import { AccountDetail, AddChargetDetailFormStat } from '/@/data/interface'
+import { AccountDetail, AddChargetDetailFormStat, CategoryDetail } from '/@/data/interface'
 import { accountList } from '/@/api/account'
 import { categoryList } from '/@/api/category'
 import { unRepayDetailList } from '../api/charge_detail'
@@ -123,11 +123,15 @@ export default defineComponent({
       })
     }
 
+    interface CategoryMap extends Object { }
+
     // 获取分类列表
-    const categoryMap = ref({})
+    const categoryMap = ref <CategoryMap>()
     categoryList().then(response => {
       categoryMap.value = response.data.data
       setCategoryInitValue()
+      console.log(typeof response.data.data)
+      console.log(categoryMap.value)
     })
     // 表单
     const formState: UnwrapRef<AddChargetDetailFormStat> = reactive({
