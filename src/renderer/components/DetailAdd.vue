@@ -130,8 +130,6 @@ export default defineComponent({
     categoryList().then(response => {
       categoryMap.value = response.data.data
       setCategoryInitValue()
-      console.log(typeof response.data.data)
-      console.log(categoryMap.value)
     })
     // 表单
     const formState: UnwrapRef<AddChargetDetailFormStat> = reactive({

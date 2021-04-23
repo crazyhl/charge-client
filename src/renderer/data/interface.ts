@@ -53,3 +53,15 @@ export interface AddChargetDetailFormStat {
   transferAccountId: number;
   repaidDetailIds: number[];
 }
+
+export interface repaidChargeDetail {
+  id: number;
+  account_id: number;
+  type: number;
+  category: CategoryDetail;
+  money: number;
+  description: string;
+  create_at: string;
+  update_at: string;
+  change_at: string
+}
