@@ -44,14 +44,14 @@ export interface EditCategoryFormStat {
 export interface CategoryDetail extends EditCategoryFormStat {}
 
 export interface AddChargetDetailFormStat {
-  accountId: number;
+  account_id: number;
   type: number;
-  categoryId: number;
+  category_id: number;
   money: number;
   description: string;
-  repayAccountId: number;
-  transferAccountId: number;
-  repaidDetailIds: number[];
+  repay_account_id: number;
+  transfer_account_id: number;
+  repay_detail_ids: number[];
 }
 
 export interface repaidChargeDetail {
@@ -65,3 +65,5 @@ export interface repaidChargeDetail {
   update_at: string;
   change_at: string
 }
+
+export interface unpaidChargeDetail extends repaidChargeDetail{}
