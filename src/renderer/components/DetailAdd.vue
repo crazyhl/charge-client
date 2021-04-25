@@ -49,13 +49,15 @@
           >
             <a-select-option :value="account.id" v-for="account in accounts" :key="account.id">{{account.name}}</a-select-option>
           </a-select>
-          <a-form-item label="Activity type">
-            <a-checkbox-group v-model:value="formState.repay_detail_ids">
-              <a-checkbox value="1" name="type">Online</a-checkbox>
-              <a-checkbox value="2" name="type">Promotion</a-checkbox>
-              <a-checkbox value="3" name="type">Offline</a-checkbox>
-            </a-checkbox-group>
-          </a-form-item>
+          
+        </a-form-item>
+        <a-form-item label="未还账单" v-if="unRepaidDetialList">
+          <a-checkbox-group v-model:value="formState.repay_detail_ids">
+            <a-checkbox v-for="unrepaidDetail in unRepaidDetialList" 
+              :value="unrepaidDetail.id" name="type" :key="unrepaidDetail.id">
+              {{unrepaidDetail.category.name}}:{{unrepaidDetail.money}}
+            </a-checkbox>
+          </a-checkbox-group>
         </a-form-item>
       </template>
       <template v-if="formState.type === 4">
@@ -64,7 +66,9 @@
             v-model:value="formState.transfer_account_id"
             ref="select"
           >
-            <a-select-option :value="account.id" v-for="account in accounts" :key="account.id">{{account.name}}</a-select-option>
+            <a-select-option :value="account.id" v-for="account in accounts" :key="account.id">
+              {{account.name}}
+            </a-select-option>
           </a-select>
         </a-form-item>
       </template>
@@ -79,7 +83,7 @@ import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue'
 import { AccountDetail, AddChargetDetailFormStat, unpaidChargeDetail } from '/@/data/interface'
 import { accountList } from '/@/api/account'
 import { categoryList } from '/@/api/category'
-import { unRepayDetailList } from '../api/charge_detail'
+import { chargeDetailAdd, unRepayDetailList } from '../api/charge_detail'
 
 export default defineComponent({
   setup() {
@@ -128,6 +132,7 @@ export default defineComponent({
       // 获取该账户的未还列表
       unRepayDetailList(formState.repay_account_id).then(resp => {
         unRepaidDetialList.value = resp.data.data
+        console.log(unRepaidDetialList.value)
       })
     }
 
@@ -155,7 +160,10 @@ export default defineComponent({
     })
     // 提交事件
     const onSubmit = () => {
-      console.log('values', formState, toRaw(formState))
+      chargeDetailAdd(toRaw<AddChargetDetailFormStat>(formState))
+        .then(response => {
+          console.log(response)
+        })
     }
 
     return {
