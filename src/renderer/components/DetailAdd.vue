@@ -1,5 +1,5 @@
 <template>
-    <a-typography-title :level="3">新增记账{{typeof categoryMap}}</a-typography-title>
+    <a-typography-title :level="3">新增记账</a-typography-title>
     <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="账户">
         <a-select

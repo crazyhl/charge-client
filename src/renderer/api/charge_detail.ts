@@ -8,3 +8,12 @@ export function unRepayDetailList(accountId: number) {
 export function chargeDetailAdd(data: AddChargetDetailFormStat) {
   return request.post('/chargeDetail', data)
 }
+
+export function chargeDetailList(page: number, pageSize: number) {
+  return request.get('/chargeDetail/list', {
+    params: {
+      page,
+      pageSize
+    }
+  })
+}
