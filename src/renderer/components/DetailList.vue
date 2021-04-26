@@ -12,55 +12,113 @@
       :loading="loading"
       @change="handleTableChange"
     >
+      <template #type="{ text }">
+        <template v-if="text == 0">
+          收入
+        </template>
+        <template v-else-if="text == 1">
+          支出
+        </template>
+        <template v-else-if="text == 2">
+          借
+        </template>
+        <template v-else-if="text == 3">
+          还
+        </template>
+        <template v-else>
+          转
+        </template>
+      </template>
+
+      <template #expandedRowRender="{ record }">
+        <template v-if="record.type == 0">
+          没有更多信息
+        </template>
+        <template v-else-if="record.type == 1">
+          没有更多信息
+        </template>
+        <template v-else-if="record.type == 2">
+          <template v-if="record.repaid_detail == undefined">
+            <span style="color:#c04851">未还</span>
+          </template>
+          <template v-else>
+            <span style="color:#346c9c">已还：时间: {{record.repaid_detail.create_at}}</span>
+          </template>
+        </template>
+        <template v-else-if="record.type == 3">
+          还
+        </template>
+        <template v-else>
+          转
+        </template>
+      </template>
     </a-table>
   </div>
 </template>
 
 <script lang=ts>
 import { defineComponent, ref, computed } from 'vue'
-import { TableState, TableStateFilters } from 'ant-design-vue/es/table/interface';
-import { chargeDetailList } from '../api/charge_detail';
+import { TableState, TableStateFilters } from 'ant-design-vue/es/table/interface'
+import { chargeDetailList } from '../api/charge_detail'
+import { chargeDetail } from '../data/interface'
 
 type Pagination = TableState['pagination'];
 export default defineComponent({
   setup() {
     const page = ref(1)
-    const pageSize = 2
+    const pageSize = 5
     const total = ref(0)
     const loading = ref(false)
     const columns = [
       {
         title: 'Id',
-        dataIndex: 'id',
+        dataIndex: 'id'
       },
-    ];
-    const dataSource = ref([])
+      {
+        title: '账户',
+        dataIndex: 'account.name'
+      },
+      {
+        title: '类型',
+        dataIndex: 'type',
+        slots: { customRender: 'type' }
+      },
+      {
+        title: '分类',
+        dataIndex: 'category.name'
+      },
+      {
+        title: '金额',
+        dataIndex: 'money'
+      }
+    ]
+    const dataSource = ref<chargeDetail[]>([])
     const handleTableChange = (pagination : Pagination, filters :TableStateFilters, sorter : any) => {
-      console.log("params", pagination, filters, sorter)
       page.value = pagination?.current ? pagination?.current : 1
+      chargeDetailList(page.value, pageSize).then(response => {
+        const data = response.data.data
+        dataSource.value = data.data
+        total.value = data.total
+      })
     }
-
     chargeDetailList(page.value, pageSize).then(response => {
-      console.log("response", response)
       const data = response.data.data
       dataSource.value = data.data
-      total.value = 11 //data.total
-      console.log(total.value)
+      total.value = data.total
     })
-    
 
     const pagination = computed(() => ({
       total: total.value,
       current: page.value,
-      pageSize: pageSize,
-    }));
+      pageSize: pageSize
+    }))
 
     return {
       columns,
       loading,
       dataSource,
       handleTableChange,
-      pagination,
+      pagination
     }
   }
 })

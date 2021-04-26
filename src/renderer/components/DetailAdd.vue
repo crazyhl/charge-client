@@ -49,11 +49,11 @@
           >
             <a-select-option :value="account.id" v-for="account in accounts" :key="account.id">{{account.name}}</a-select-option>
           </a-select>
-          
+
         </a-form-item>
         <a-form-item label="未还账单" v-if="unRepaidDetialList">
           <a-checkbox-group v-model:value="formState.repay_detail_ids">
-            <a-checkbox v-for="unrepaidDetail in unRepaidDetialList" 
+            <a-checkbox v-for="unrepaidDetail in unRepaidDetialList"
               :value="unrepaidDetail.id" name="type" :key="unrepaidDetail.id">
               {{unrepaidDetail.category.name}}:{{unrepaidDetail.money}}
             </a-checkbox>
@@ -101,7 +101,7 @@ export default defineComponent({
 
     // 类型改变后重置分类
     const setCategoryInitValue = () => {
-      if (categoryMap.value != undefined) {
+      if (categoryMap.value !== undefined) {
         if (categoryMap.value[formState.type.toString()] !== undefined) {
           formState.category_id = categoryMap.value[formState.type][0].id
         } else {

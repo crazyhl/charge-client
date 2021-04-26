@@ -36,7 +36,11 @@ import { categoryDelete, categoryList } from '/@/api/category'
 
 export default defineComponent({
   setup() {
-    const categoryMap = ref({})
+    interface CategoryMap {
+      [key: string]: any;
+      [index: number]: any;
+    }
+    const categoryMap = ref<CategoryMap>({})
     const type = ['收入', '支出', '借', '还', '转']
 
     categoryList().then(response => {

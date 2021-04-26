@@ -67,3 +67,18 @@ export interface repaidChargeDetail {
 }
 
 export interface unpaidChargeDetail extends repaidChargeDetail{}
+
+export interface chargeDetail {
+  id: number;
+  account: AccountDetail;
+  type: number;
+  category: CategoryDetail;
+  money: number;
+  description: string;
+  repaid_detail: repaidChargeDetail;
+  repay_account: AccountDetail;
+  transfer_account: AccountDetail;
+  create_at: string;
+  update_at: string;
+  change_at: string
+}
