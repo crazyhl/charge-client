@@ -45,7 +45,7 @@ const columns = [
     dataIndex: 'name'
   },
   {
-    title: '现金余额',
+    title: '初始现金余额',
     dataIndex: 'cash'
   },
   {
@@ -56,7 +56,7 @@ const columns = [
     }
   },
   {
-    title: '信用余额',
+    title: '初始信用余额',
     dataIndex: 'credit'
   },
   {

@@ -47,7 +47,7 @@ export default defineComponent({
           notification.open({
             message: '添加成功',
             description: '添加成功，正在跳转',
-            duration: 3,
+            duration: 1,
             onClose: () => {
               // 跳转
               console.log(router)

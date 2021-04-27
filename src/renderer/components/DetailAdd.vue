@@ -84,6 +84,8 @@ import { AccountDetail, AddChargetDetailFormStat, unpaidChargeDetail } from '/@/
 import { accountList } from '/@/api/account'
 import { categoryList } from '/@/api/category'
 import { chargeDetailAdd, unRepayDetailList } from '../api/charge_detail'
+import { notification } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
@@ -158,11 +160,22 @@ export default defineComponent({
       transfer_account_id: 0,
       repay_detail_ids: []
     })
+    const router = useRouter()
     // 提交事件
     const onSubmit = () => {
       chargeDetailAdd(toRaw<AddChargetDetailFormStat>(formState))
         .then(response => {
           console.log(response)
+          notification.open({
+            message: '添加成功',
+            description: '添加成功，正在跳转',
+            duration: 1,
+            onClose: () => {
+              // 跳转
+              console.log(router)
+              router.push({ name: 'ChargeDetailList' })
+            }
+          })
         })
     }
 
