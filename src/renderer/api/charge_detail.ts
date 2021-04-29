@@ -17,3 +17,7 @@ export function chargeDetailList(page: number, pageSize: number) {
     }
   })
 }
+
+export function chargeDetailDelete(id: number) {
+  return request.delete('chargeDetail/' + id)
+}

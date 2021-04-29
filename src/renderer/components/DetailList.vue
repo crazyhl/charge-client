@@ -53,6 +53,15 @@
           转入账户: {{record.transfer_account.name}}
         </template>
       </template>
+      <template #action="{ record, index }">
+        <a-button type="default">
+            <router-link class="clickable" replace :to="{ name: 'AccountEdit', params: { id: record.id }}">编辑</router-link>
+        </a-button>
+        &nbsp;
+        <a-button type="danger" @click="deleteDetailFunc(record.id, index)">
+            删除
+        </a-button>
+      </template>
     </a-table>
   </div>
 </template>
@@ -60,8 +69,10 @@
 <script lang=ts>
 import { defineComponent, ref, computed } from 'vue'
 import { TableState, TableStateFilters } from 'ant-design-vue/es/table/interface'
-import { chargeDetailList } from '../api/charge_detail'
+import { chargeDetailDelete, chargeDetailList } from '../api/charge_detail'
 import { chargeDetail } from '../data/interface'
+import { accountDelete } from '../api/account';
+import { message } from 'ant-design-vue';
 
 type Pagination = TableState['pagination'];
 export default defineComponent({
@@ -91,6 +102,11 @@ export default defineComponent({
       {
         title: '时间',
         dataIndex: 'create_at'
+      },
+      {
+        title: '操作',
+        key: 'action',
+        slots: { customRender: 'action' }
       }
     ]
     const dataSource = ref<chargeDetail[]>([])
@@ -114,12 +130,23 @@ export default defineComponent({
       pageSize: pageSize
     }))
 
+    // 删除详情方法
+    const deleteDetailFunc = (id: number, index: number) => {
+      chargeDetailDelete(id).then(response => {
+        console.log(response.data)
+        // 显示 message 移除数据
+        dataSource.value.splice(index, 1)
+        message.success(response.data.message)
+      })
+    }
+
     return {
       columns,
       loading,
       dataSource,
       handleTableChange,
-      pagination
+      pagination,
+      deleteDetailFunc
     }
   }
 })

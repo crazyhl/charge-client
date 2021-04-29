@@ -174,8 +174,9 @@ export default defineComponent({
     const router = useRouter()
     // 提交事件
     const onSubmit = () => {
-      formState.date = Math.floor(moment(formState.date).valueOf() / 1000)
-      chargeDetailAdd(toRaw<AddChargetDetailFormStat>(formState))
+      const formData = toRaw<AddChargetDetailFormStat>(formState)
+      formData.date = Math.floor(moment(formState.date).valueOf() / 1000)
+      chargeDetailAdd(formData)
         .then(response => {
           console.log(response)
           notification.open({
