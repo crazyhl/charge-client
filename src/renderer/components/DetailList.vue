@@ -67,14 +67,10 @@ type Pagination = TableState['pagination'];
 export default defineComponent({
   setup() {
     const page = ref(1)
-    const pageSize = 5
+    const pageSize = 15
     const total = ref(0)
     const loading = ref(false)
     const columns = [
-      {
-        title: 'Id',
-        dataIndex: 'id'
-      },
       {
         title: '账户',
         dataIndex: 'account.name'

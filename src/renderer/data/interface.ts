@@ -1,3 +1,4 @@
+import { Moment } from 'moment';
 /* eslint-disable camelcase */
 export interface AddAccountFormState {
   name: string;
@@ -52,6 +53,7 @@ export interface AddChargetDetailFormStat {
   repay_account_id: number;
   transfer_account_id: number;
   repay_detail_ids: number[];
+  date: Moment | undefined | number;
 }
 
 export interface repaidChargeDetail {

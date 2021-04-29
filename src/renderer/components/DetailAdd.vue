@@ -33,6 +33,14 @@
       <a-form-item label="金额">
         <a-input v-model:value.number="formState.money" :precision="3" type="number" />
       </a-form-item>
+      <a-form-item label="日期">
+        <a-date-picker
+          v-model:value="formState.date"
+          type="date"
+          placeholder="Pick a date"
+          style="width: 100%"
+        />
+      </a-form-item>
       <a-form-item label="说明">
         <a-textarea
           v-model:value="formState.description"
@@ -86,6 +94,8 @@ import { categoryList } from '/@/api/category'
 import { chargeDetailAdd, unRepayDetailList } from '../api/charge_detail'
 import { notification } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
+import moment from 'moment'
+import 'moment/dist/locale/zh-cn';
 
 export default defineComponent({
   setup() {
@@ -158,11 +168,13 @@ export default defineComponent({
       description: '',
       repay_account_id: 0,
       transfer_account_id: 0,
-      repay_detail_ids: []
+      repay_detail_ids: [],
+      date: moment(),
     })
     const router = useRouter()
     // 提交事件
     const onSubmit = () => {
+      formState.date = Math.floor(moment(formState.date).valueOf() / 1000)
       chargeDetailAdd(toRaw<AddChargetDetailFormStat>(formState))
         .then(response => {
           console.log(response)
