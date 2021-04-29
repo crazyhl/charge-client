@@ -31,6 +31,7 @@
       </template>
 
       <template #expandedRowRender="{ record }">
+        <p v-if="record.description !=''">说明: {{record.description}}</p>
         <template v-if="record.type == 0">
           没有更多信息
         </template>
@@ -46,10 +47,10 @@
           </template>
         </template>
         <template v-else-if="record.type == 3">
-          还
+          还款账户: {{record.repay_account.name}}
         </template>
         <template v-else>
-          转
+          转入账户: {{record.transfer_account.name}}
         </template>
       </template>
     </a-table>
@@ -90,6 +91,10 @@ export default defineComponent({
       {
         title: '金额',
         dataIndex: 'money'
+      },
+      {
+        title: '时间',
+        dataIndex: 'create_at'
       }
     ]
     const dataSource = ref<chargeDetail[]>([])
