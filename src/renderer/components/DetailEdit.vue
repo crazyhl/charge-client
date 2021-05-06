@@ -1,5 +1,5 @@
 <template>
-    <a-typography-title :level="3">新增记账</a-typography-title>
+    <a-typography-title :level="3">编辑记账</a-typography-title>
     <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="账户">
         <a-select
@@ -59,12 +59,20 @@
           </a-select>
 
         </a-form-item>
-        <a-form-item label="未还账单" v-if="unRepaidDetialList">
+        <a-form-item label="未还账单">
           <a-checkbox-group v-model:value="formState.repay_detail_ids">
-            <a-checkbox v-for="unrepaidDetail in unRepaidDetialList"
-              :value="unrepaidDetail.id" name="type" :key="unrepaidDetail.id">
-              {{unrepaidDetail.category.name}}:{{unrepaidDetail.money}}({{unrepaidDetail.create_at}})
-            </a-checkbox>
+            <template v-if="repaidDetailList.length > 0">
+              <a-checkbox v-for="repaidDetail in repaidDetailList"
+                :value="repaidDetail.id" name="type" :key="repaidDetail.id">
+                {{repaidDetail.category.name}}:{{repaidDetail.money}}({{repaidDetail.create_at}})
+              </a-checkbox>
+            </template>
+            <template v-if="unRepaidDetialList.length > 0">
+              <a-checkbox v-for="unrepaidDetail in unRepaidDetialList"
+                :value="unrepaidDetail.id" name="type" :key="unrepaidDetail.id">
+                {{unrepaidDetail.category.name}}:{{unrepaidDetail.money}}({{unrepaidDetail.create_at}})
+              </a-checkbox>
+            </template>
           </a-checkbox-group>
         </a-form-item>
       </template>
@@ -88,12 +96,12 @@
 
 <script lang=ts>
 import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue'
-import { AccountDetail, AddChargetDetailFormStat, unpaidChargeDetail } from '/@/data/interface'
+import { AccountDetail, AddChargetDetailFormStat, EditChargeDetailFormStat, unpaidChargeDetail } from '/@/data/interface'
 import { accountList } from '/@/api/account'
 import { categoryList } from '/@/api/category'
-import { chargeDetailAdd, unRepayDetailList } from '../api/charge_detail'
+import { unRepayDetailList, chargeDetailEditDetail, chargeDetailEdit } from '../api/charge_detail'
 import { notification } from 'ant-design-vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn';
 
@@ -160,7 +168,8 @@ export default defineComponent({
       setCategoryInitValue()
     })
     // 表单
-    const formState: UnwrapRef<AddChargetDetailFormStat> = reactive({
+    const formState: UnwrapRef<EditChargeDetailFormStat> = reactive({
+      id: 0,
       account_id: 0,
       type: 0,
       category_id: 0,
@@ -172,19 +181,51 @@ export default defineComponent({
       date: moment(),
     })
     const router = useRouter()
+    const route = useRoute()
+
+    const repaidDetailList = ref<unpaidChargeDetail[]>([])
+
+    chargeDetailEditDetail(route.params.id.toString()).then(response => {
+      console.log(response.data.data)
+      const detailData = response.data.data
+      formState.id = detailData.id
+      formState.account_id = detailData.account_id
+      formState.money = detailData.money
+      formState.type = detailData.type
+      formState.category_id = detailData.category_id
+      formState.description = detailData.description
+      formState.repay_account_id = detailData.repay_account_id
+      formState.transfer_account_id = detailData.transfer_account_id
+      formState.date = moment.unix(detailData.create_at)
+      if (detailData.repaid_details) {
+        repaidDetailList.value = detailData.repaid_details
+        repaidDetailList.value.forEach(detail => {
+          formState.repay_detail_ids.push(detail.id)
+        })
+      }
+      switch (formState.type) {
+        case 3:
+          handleRepayAccountChange()
+          break
+      }
+    }).catch(() => {
+      router.push({ name: 'CategoryList' })
+    })
+
     // 提交事件
     const onSubmit = () => {
-      const formData = toRaw<AddChargetDetailFormStat>(formState)
+      const formData = toRaw<EditChargeDetailFormStat>(formState)
       formData.date = Math.floor(moment(formState.date).valueOf() / 1000)
-      chargeDetailAdd(formData)
+      chargeDetailEdit(formData)
         .then(response => {
           console.log(response)
           notification.open({
-            message: '添加成功',
-            description: '添加成功，正在跳转',
+            message: '修改成功',
+            description: '修改成功，正在跳转',
             duration: 1,
             onClose: () => {
               // 跳转
+              console.log(router)
               router.push({ name: 'ChargeDetailList' })
             }
           })
@@ -200,7 +241,8 @@ export default defineComponent({
       categoryMap,
       typeChange,
       handleRepayAccountChange,
-      unRepaidDetialList
+      unRepaidDetialList,
+      repaidDetailList,
     }
   }
 })

@@ -1,4 +1,4 @@
-import { AddChargetDetailFormStat } from '../data/interface'
+import { AddChargetDetailFormStat, EditChargeDetailFormStat } from '../data/interface'
 import request from '/@/request'
 
 export function unRepayDetailList(accountId: number) {
@@ -20,4 +20,12 @@ export function chargeDetailList(page: number, pageSize: number) {
 
 export function chargeDetailDelete(id: number) {
   return request.delete('chargeDetail/' + id)
+}
+
+export function chargeDetailEditDetail(id: string) {
+  return request.get('/chargeDetail/' + id + '/edit')
+}
+
+export function chargeDetailEdit(data: EditChargeDetailFormStat) {
+  return request.put('/chargeDetail/' + data.id, data)
 }

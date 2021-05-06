@@ -56,6 +56,10 @@ export interface AddChargetDetailFormStat {
   date: Moment | undefined | number;
 }
 
+export interface EditChargeDetailFormStat extends AddChargetDetailFormStat {
+  id: number;
+}
+
 export interface repaidChargeDetail {
   id: number;
   account_id: number;

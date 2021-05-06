@@ -55,7 +55,7 @@
       </template>
       <template #action="{ record, index }">
         <a-button type="default">
-            <router-link class="clickable" replace :to="{ name: 'AccountEdit', params: { id: record.id }}">编辑</router-link>
+            <router-link class="clickable" replace :to="{ name: 'ChargeDetailEdit', params: { id: record.id }}">编辑</router-link>
         </a-button>
         &nbsp;
         <a-button type="danger" @click="deleteDetailFunc(record.id, index)">
