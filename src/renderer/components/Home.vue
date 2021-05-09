@@ -8,12 +8,35 @@
     >
       <a-select-option :value="month" v-for="month in monthList" :key="month">{{month}}</a-select-option>
     </a-select>
+    <a-typography-title :level="5" style="margin-top:8px;">统计信息</a-typography-title>
+    <a-descriptions v-for="(monthData, index) in monthDataList" :key="index">
+      <a-descriptions-item label="账户">{{monthData.account.name}}</a-descriptions-item>
+      <a-descriptions-item label="收入">{{monthData.cash_in}}</a-descriptions-item>
+      <a-descriptions-item label="支出">{{monthData.cash_out}}</a-descriptions-item>
+    </a-descriptions>
+    <a-typography-title :level="5" style="margin-top:8px;">分类统计</a-typography-title>
+    <a-descriptions v-for="(categoryData, index) in monthCategoryDetailList" :key="index">
+      <a-descriptions-item label="分类名称">
+        {{categoryData.category.name}}
+        （
+        <span style="color:#f1939c">
+          <template v-if="categoryData.type == 1">
+            支出
+          </template>
+          <template v-else-if="categoryData.type == 2">
+            借
+          </template>
+        </span>
+        ）
+      </a-descriptions-item>
+      <a-descriptions-item label="金额" :cols="2">{{categoryData.money}}</a-descriptions-item>
+    </a-descriptions>
   </div>
 </template>
 
 <script lang=ts>
 import { defineComponent, ref } from 'vue'
-import { summaryMonthList } from '../api/statistics'
+import { expensesCategory, summaryMonthData, summaryMonthList } from '../api/statistics'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn';
 
@@ -24,6 +47,8 @@ export default defineComponent({
     const currentMonth = moment().format("YYYYMM")
     const monthList = ref<string[]>([currentMonth])
     const selectMonth = ref(currentMonth)
+    const monthDataList = ref([])
+    const monthCategoryDetailList = ref([])
     summaryMonthList().then(response => {
       const responseMonthList = response.data.data
       responseMonthList.forEach((date: string) => {
@@ -34,13 +59,24 @@ export default defineComponent({
     })
 
     const monthSelectorHandleChange = (value: string) => {
-      console.log(`selected ${value}`);
+      summaryMonthData(value).then(response => {
+        monthDataList.value = response.data.data
+        console.log(monthDataList.value)
+      })
+      expensesCategory(value).then(response => {
+        console.log(response)
+        monthCategoryDetailList.value = response.data.data
+      })
     };
+
+    monthSelectorHandleChange(currentMonth)
 
     return {
       monthList,
       selectMonth,
       monthSelectorHandleChange,
+      monthDataList,
+      monthCategoryDetailList,
     }
   }
 })
