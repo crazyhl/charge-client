@@ -17,7 +17,7 @@
     <a-typography-title :level="5" style="margin-top:8px;">分类统计</a-typography-title>
     <a-descriptions v-for="(categoryData, index) in monthCategoryDetailList" :key="index">
       <a-descriptions-item label="分类名称">
-        {{categoryData.category.name}}
+        <a-button type="link"><router-link class="clickable" replace :to="{ name: 'ChargeDetailWithCategoryMonthList', params: { category: categoryData.category.id, month: selectMonth }}">{{categoryData.category.name}}</router-link></a-button>
         （
         <span style="color:#f1939c">
           <template v-if="categoryData.type == 1">

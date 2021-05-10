@@ -58,6 +58,11 @@ const router = createRouter({
       component: DetailList
     },
     {
+      path: '/charge-details/:category/:month',
+      name: 'ChargeDetailWithCategoryMonthList',
+      component: DetailList
+    },
+    {
       path: '/charge-details/add',
       name: 'ChargeDetailAdd',
       component: DetailAdd

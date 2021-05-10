@@ -9,8 +9,12 @@ export function chargeDetailAdd(data: AddChargetDetailFormStat) {
   return request.post('/chargeDetail', data)
 }
 
-export function chargeDetailList(page: number, pageSize: number) {
-  return request.get('/chargeDetail/list', {
+export function chargeDetailList(page: number, pageSize: number, category: string|undefined, month: string|undefined) {
+  let requestUrl = '/chargeDetail/list'
+  if(category != undefined && month != undefined) {
+    requestUrl += "/" + month + "/" + category
+  }
+  return request.get(requestUrl, {
     params: {
       page,
       pageSize

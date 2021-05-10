@@ -73,6 +73,7 @@ import { chargeDetailDelete, chargeDetailList } from '../api/charge_detail'
 import { chargeDetail } from '../data/interface'
 import { accountDelete } from '../api/account';
 import { message } from 'ant-design-vue';
+import { useRoute } from 'vue-router';
 
 type Pagination = TableState['pagination'];
 export default defineComponent({
@@ -109,16 +110,24 @@ export default defineComponent({
         slots: { customRender: 'action' }
       }
     ]
+
+    const route = useRoute()
+
+    console.log(route.params)
+    console.log(route.params.category)
+    console.log(route.params.month)
+
     const dataSource = ref<chargeDetail[]>([])
     const handleTableChange = (pagination : Pagination, filters :TableStateFilters, sorter : any) => {
       page.value = pagination?.current ? pagination?.current : 1
-      chargeDetailList(page.value, pageSize).then(response => {
+      chargeDetailList(page.value, pageSize, route.params.category !== undefined ? route.params.category.toString() : undefined, route.params.month !== undefined ? route.params.month.toString() : undefined).then(response => {
         const data = response.data.data
         dataSource.value = data.data
         total.value = data.total
       })
     }
-    chargeDetailList(page.value, pageSize).then(response => {
+
+    chargeDetailList(page.value, pageSize, route.params.category !== undefined ? route.params.category.toString() : undefined, route.params.month !== undefined ? route.params.month.toString() : undefined).then(response => {
       const data = response.data.data
       dataSource.value = data.data
       total.value = data.total
