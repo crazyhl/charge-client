@@ -11,3 +11,7 @@ export function summaryMonthData(date: string) {
 export function expensesCategory(date: string) {
   return request.get('/statistics/expensesCategory/' + date)
 }
+
+export function summaryUnRepaidData() {
+  return request.get('/statistics/summaryUnRepaidData')
+}

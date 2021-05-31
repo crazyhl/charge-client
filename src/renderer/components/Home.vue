@@ -14,6 +14,12 @@
       <a-descriptions-item label="收入">{{monthData.cash_in}}</a-descriptions-item>
       <a-descriptions-item label="支出">{{monthData.cash_out}}</a-descriptions-item>
     </a-descriptions>
+    <a-typography-title :level="5" style="margin-top:8px;">欠款信息</a-typography-title>
+    <a-descriptions>
+      <a-descriptions-item label="未还">{{totalUnRepaidData.total_un_repaid}}</a-descriptions-item>
+      <a-descriptions-item label="欠款">{{totalUnRepaidData.credit_out}}</a-descriptions-item>
+      <a-descriptions-item label="还款">{{totalUnRepaidData.credit_in}}</a-descriptions-item>
+    </a-descriptions>
     <a-typography-title :level="5" style="margin-top:8px;">分类统计</a-typography-title>
     <a-descriptions v-for="(categoryData, index) in monthCategoryDetailList" :key="index">
       <a-descriptions-item label="分类名称">
@@ -36,7 +42,7 @@
 
 <script lang=ts>
 import { defineComponent, ref } from 'vue'
-import { expensesCategory, summaryMonthData, summaryMonthList } from '../api/statistics'
+import { expensesCategory, summaryMonthData, summaryMonthList,summaryUnRepaidData } from '../api/statistics'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn';
 
@@ -49,6 +55,11 @@ export default defineComponent({
     const selectMonth = ref(currentMonth)
     const monthDataList = ref([])
     const monthCategoryDetailList = ref([])
+    const totalUnRepaidData = ref({
+      'credit_in': 0,
+      'credit_out': 0,
+      'total_un_repaid': 0,
+    })
     summaryMonthList().then(response => {
       const responseMonthList = response.data.data
       responseMonthList.forEach((date: string) => {
@@ -71,12 +82,18 @@ export default defineComponent({
 
     monthSelectorHandleChange(currentMonth)
 
+    summaryUnRepaidData().then(response => {
+      console.log("summaryUnRepaidData", response.data.data)
+      totalUnRepaidData.value = response.data.data
+    })
+
     return {
       monthList,
       selectMonth,
       monthSelectorHandleChange,
       monthDataList,
       monthCategoryDetailList,
+      totalUnRepaidData,
     }
   }
 })
