@@ -9,10 +9,19 @@ export function chargeDetailAdd(data: AddChargetDetailFormStat) {
   return request.post('/chargeDetail', data)
 }
 
-export function chargeDetailList(page: number, pageSize: number, category: string|undefined, month: string|undefined) {
+export function chargeDetailList(page: number, pageSize: number, category: string|undefined, month: string|undefined, account: string|undefined) {
   let requestUrl = '/chargeDetail/list'
-  if(category != undefined && month != undefined) {
-    requestUrl += "/" + month + "/" + category
+  
+  if(month != undefined && (category != undefined || account != undefined)) {
+    if (category == undefined) {
+      category = '0'
+    }
+
+    if (account == undefined) {
+      account = '0'
+    }
+
+    requestUrl += "/" + month + "/" + category + "/" + account
   }
   return request.get(requestUrl, {
     params: {

@@ -114,20 +114,21 @@ export default defineComponent({
     const route = useRoute()
 
     console.log(route.params)
-    console.log(route.params.category)
-    console.log(route.params.month)
+    console.log('route.params.category', route.params.category)
+    console.log('route.params.month', route.params.month)
+    console.log('route.params.account', route.params.account)
 
     const dataSource = ref<chargeDetail[]>([])
     const handleTableChange = (pagination : Pagination, filters :TableStateFilters, sorter : any) => {
       page.value = pagination?.current ? pagination?.current : 1
-      chargeDetailList(page.value, pageSize, route.params.category !== undefined ? route.params.category.toString() : undefined, route.params.month !== undefined ? route.params.month.toString() : undefined).then(response => {
+      chargeDetailList(page.value, pageSize, route.params.category !== undefined ? route.params.category.toString() : undefined, route.params.month !== undefined ? route.params.month.toString() : undefined, route.params.account !== undefined ? route.params.account.toString() : undefined).then(response => {
         const data = response.data.data
         dataSource.value = data.data
         total.value = data.total
       })
     }
 
-    chargeDetailList(page.value, pageSize, route.params.category !== undefined ? route.params.category.toString() : undefined, route.params.month !== undefined ? route.params.month.toString() : undefined).then(response => {
+    chargeDetailList(page.value, pageSize, route.params.category !== undefined ? route.params.category.toString() : undefined, route.params.month !== undefined ? route.params.month.toString() : undefined, route.params.account !== undefined ? route.params.account.toString() : undefined).then(response => {
       const data = response.data.data
       dataSource.value = data.data
       total.value = data.total

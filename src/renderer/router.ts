@@ -63,6 +63,11 @@ const router = createRouter({
       component: DetailList
     },
     {
+      path: '/charge-details/:account/:month',
+      name: 'ChargeDetailWithAccountMonthList',
+      component: DetailList
+    },
+    {
       path: '/charge-details/add',
       name: 'ChargeDetailAdd',
       component: DetailAdd

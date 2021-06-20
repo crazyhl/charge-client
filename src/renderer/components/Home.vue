@@ -9,16 +9,21 @@
       <a-select-option :value="month" v-for="month in monthList" :key="month">{{month}}</a-select-option>
     </a-select>
     <a-typography-title :level="5" style="margin-top:8px;">统计信息</a-typography-title>
-    <a-descriptions v-for="(monthData, index) in monthDataList" :key="index">
-      <a-descriptions-item label="账户">{{monthData.account.name}}</a-descriptions-item>
+    <a-descriptions v-for="(monthData, index) in monthDataList" :key="index" :class="[monthData.is_total_account ? 'total-account' : '']">
+      <a-descriptions-item label="账户">
+        <router-link class="clickable" replace 
+          :to="{ name: 'ChargeDetailWithAccountMonthList', params: { account: monthData.account.id, month: selectMonth }}">
+          {{monthData.account.name}}
+        </router-link>
+      </a-descriptions-item>
       <a-descriptions-item label="收入">{{monthData.cash_in}}</a-descriptions-item>
       <a-descriptions-item label="支出">{{monthData.cash_out}}</a-descriptions-item>
     </a-descriptions>
-    <a-typography-title :level="5" style="margin-top:8px;">欠款信息</a-typography-title>
+    <a-typography-title :level="5" style="margin-top:8px;">信用卡欠款信息</a-typography-title>
     <a-descriptions>
       <a-descriptions-item label="未还">{{totalUnRepaidData.total_un_repaid}}</a-descriptions-item>
-      <a-descriptions-item label="欠款">{{totalUnRepaidData.credit_out}}</a-descriptions-item>
-      <a-descriptions-item label="还款">{{totalUnRepaidData.credit_in}}</a-descriptions-item>
+      <a-descriptions-item label="总欠款">{{totalUnRepaidData.credit_out}}</a-descriptions-item>
+      <a-descriptions-item label="总还款">{{totalUnRepaidData.credit_in}}</a-descriptions-item>
     </a-descriptions>
     <a-typography-title :level="5" style="margin-top:8px;">分类统计</a-typography-title>
     <a-descriptions v-for="(categoryData, index) in monthCategoryDetailList" :key="index">
@@ -98,3 +103,12 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+.total-account {
+  font-weight: 600;
+}
+.total-account .ant-descriptions-item-label {
+  font-weight: 600;
+}
+</style>
